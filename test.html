@@ -26,6 +26,19 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM fully loaded and parsed');
             _formsort.load({c:'qqrXtaPDlr',f:'craig-testing-flow-delete-after-2025-04-10',v:'main'})
+
+            const iframe = document.querySelector('iframe');
+            console.log('Found iframe:', iframe.name);
+            iframe.onload = function() {
+                console.log('iframe loaded');
+                const iframeDocument = iframe.contentDocument;
+                const cssLink = iframeDocument.createElement('link');
+                cssLink.href = 'https://craigatcreonova.github.io/test-via-import.css';
+                cssLink.rel = 'stylesheet';
+                cssLink.type = 'text/css';
+                iframeDocument.head.appendChild(cssLink);
+                console.log('Added CSS link to iframe');
+            }
         });
     </script>
 
