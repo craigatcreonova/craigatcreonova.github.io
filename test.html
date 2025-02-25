@@ -26,8 +26,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM fully loaded and parsed');
             _formsort.load({c:'qqrXtaPDlr',f:'craig-testing-flow-delete-after-2025-04-10',v:'main'})
-
-            const iframe = document.querySelector('iframe');
+            
+            const iframes = document.getElementsByTagName('iframe');
+            console.log('Found iframes:', iframes.length);
+            const iframe = iframes[0];
             console.log('Found iframe:', iframe.name);
             iframe.onload = function() {
                 console.log('iframe loaded');
