@@ -1,0 +1,207 @@
+<svg width="680" height="500" viewBox="0 0 680 500" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Vibe Garden - plant your app here</title>
+  <desc>A whimsical animated night garden where glowing app-plants sway under a moonlit sky with drifting fireflies</desc>
+
+  <style>
+    @keyframes flicker1 { 0%,100%{opacity:0.9} 50%{opacity:0.2} }
+    @keyframes flicker2 { 0%,100%{opacity:0.85} 40%{opacity:0.15} }
+    @keyframes flicker3 { 0%,100%{opacity:0.75} 60%{opacity:0.25} }
+    @keyframes glow1    { 0%,100%{opacity:0.25} 50%{opacity:0.05} }
+    @keyframes glow2    { 0%,100%{opacity:0.2}  40%{opacity:0.04} }
+    @keyframes glow3    { 0%,100%{opacity:0.18} 60%{opacity:0.06} }
+    @keyframes drift1   { 0%{transform:translate(0px,0px)} 25%{transform:translate(18px,8px)} 50%{transform:translate(5px,14px)} 75%{transform:translate(-12px,5px)} 100%{transform:translate(0px,0px)} }
+    @keyframes drift2   { 0%{transform:translate(0px,0px)} 30%{transform:translate(-14px,12px)} 60%{transform:translate(10px,8px)} 100%{transform:translate(0px,0px)} }
+    @keyframes drift3   { 0%{transform:translate(0px,0px)} 20%{transform:translate(20px,-6px)} 55%{transform:translate(-8px,10px)} 80%{transform:translate(14px,4px)} 100%{transform:translate(0px,0px)} }
+    @keyframes drift4   { 0%{transform:translate(0px,0px)} 35%{transform:translate(-10px,14px)} 65%{transform:translate(12px,6px)} 100%{transform:translate(0px,0px)} }
+    @keyframes drift5   { 0%{transform:translate(0px,0px)} 40%{transform:translate(16px,-8px)} 70%{transform:translate(-6px,12px)} 100%{transform:translate(0px,0px)} }
+    @keyframes sway1    { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(2.5deg)} }
+    @keyframes sway2    { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(-2deg)} }
+    @keyframes sway3    { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(2deg)} }
+    @keyframes twinkle  { 0%,100%{opacity:0.8} 50%{opacity:0.2} }
+
+    #plant-teal   { animation: sway1 4s ease-in-out infinite; transform-origin: 163px 420px; }
+    #plant-purple { animation: sway2 5s ease-in-out infinite; transform-origin: 286px 420px; }
+    #plant-blue   { animation: sway3 3.5s ease-in-out infinite; transform-origin: 516px 420px; }
+
+    #ff1-core  { animation: flicker1 2.3s ease-in-out infinite; }
+    #ff1-glow  { animation: glow1    2.3s ease-in-out infinite; }
+    #ff1-drift { animation: drift1   6s   ease-in-out infinite; }
+    #ff2-core  { animation: flicker2 1.8s ease-in-out infinite; }
+    #ff2-glow  { animation: glow2    1.8s ease-in-out infinite; }
+    #ff2-drift { animation: drift2   7.5s ease-in-out infinite; }
+    #ff3-core  { animation: flicker3 3.1s ease-in-out infinite; }
+    #ff3-glow  { animation: glow3    3.1s ease-in-out infinite; }
+    #ff3-drift { animation: drift3   5.5s ease-in-out infinite; }
+    #ff4-core  { animation: flicker1 2.7s ease-in-out infinite; }
+    #ff4-glow  { animation: glow1    2.7s ease-in-out infinite; }
+    #ff4-drift { animation: drift4   8s   ease-in-out infinite; }
+    #ff5-core  { animation: flicker2 1.5s ease-in-out infinite; }
+    #ff5-glow  { animation: glow2    1.5s ease-in-out infinite; }
+    #ff5-drift { animation: drift5   6.5s ease-in-out infinite; }
+
+    .star-a { animation: twinkle 2.1s ease-in-out infinite; }
+    .star-b { animation: twinkle 3.4s ease-in-out infinite; }
+    .star-c { animation: twinkle 1.7s ease-in-out infinite; }
+    .star-d { animation: twinkle 4.0s ease-in-out infinite; }
+  </style>
+
+  <defs>
+    <radialGradient id="skygrad" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#1a1050"/>
+      <stop offset="100%" stop-color="#0b0820"/>
+    </radialGradient>
+    <radialGradient id="moonglow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e8f4ff" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#e8f4ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- sky -->
+  <rect width="680" height="500" fill="url(#skygrad)"/>
+
+  <!-- stars -->
+  <circle class="star-a" cx="80"  cy="40"  r="1.5" fill="white" opacity="0.9"/>
+  <circle class="star-c" cx="150" cy="25"  r="1"   fill="white" opacity="0.8"/>
+  <circle class="star-b" cx="220" cy="55"  r="1.5" fill="white" opacity="0.8"/>
+  <circle class="star-d" cx="480" cy="30"  r="1"   fill="white" opacity="0.9"/>
+  <circle class="star-a" cx="560" cy="50"  r="1.5" fill="white" opacity="0.7"/>
+  <circle class="star-c" cx="610" cy="20"  r="1"   fill="white" opacity="0.8"/>
+  <circle class="star-b" cx="60"  cy="100" r="1"   fill="white" opacity="0.6"/>
+  <circle class="star-d" cx="630" cy="90"  r="1.5" fill="white" opacity="0.7"/>
+  <circle class="star-a" cx="420" cy="15"  r="1"   fill="white" opacity="0.9"/>
+  <circle class="star-c" cx="190" cy="110" r="1"   fill="white" opacity="0.5"/>
+  <circle class="star-b" cx="500" cy="70"  r="1"   fill="white" opacity="0.6"/>
+  <circle class="star-d" cx="40"  cy="150" r="1.5" fill="white" opacity="0.4"/>
+  <circle class="star-a" cx="640" cy="130" r="1"   fill="white" opacity="0.5"/>
+  <circle class="star-c" cx="270" cy="35"  r="1"   fill="white" opacity="0.7"/>
+  <circle class="star-b" cx="370" cy="18"  r="1.5" fill="white" opacity="0.6"/>
+
+  <!-- moon glow -->
+  <circle cx="340" cy="80" r="80" fill="url(#moonglow)"/>
+  <!-- moon -->
+  <circle cx="340" cy="80" r="38" fill="#d4eaff"/>
+  <circle cx="328" cy="72" r="7"  fill="#bcd8f0" opacity="0.5"/>
+  <circle cx="352" cy="88" r="5"  fill="#bcd8f0" opacity="0.4"/>
+  <circle cx="338" cy="95" r="4"  fill="#bcd8f0" opacity="0.3"/>
+
+  <!-- ground -->
+  <rect x="0" y="320" width="680" height="180" fill="#0d1f0d"/>
+  <path d="M0 320 Q170 290 340 320 Q510 350 680 320 L680 500 L0 500 Z" fill="#112211"/>
+
+  <!-- bg trees -->
+  <g opacity="0.7">
+    <rect x="85"  y="295" width="3" height="60" fill="#1a4a1a"/>
+    <ellipse cx="86"  cy="285" rx="18" ry="22" fill="#1e5c1e"/>
+    <ellipse cx="78"  cy="295" rx="12" ry="16" fill="#174d17"/>
+    <ellipse cx="96"  cy="292" rx="14" ry="18" fill="#1e5c1e"/>
+  </g>
+  <g opacity="0.7">
+    <rect x="580" y="295" width="3" height="60" fill="#1a4a1a"/>
+    <ellipse cx="581" cy="283" rx="20" ry="24" fill="#1e5c1e"/>
+    <ellipse cx="570" cy="295" rx="13" ry="17" fill="#174d17"/>
+    <ellipse cx="593" cy="290" rx="15" ry="20" fill="#1e5c1e"/>
+  </g>
+
+  <!-- PLANT: teal -->
+  <g id="plant-teal">
+    <rect x="160" y="340" width="6" height="80" rx="3" fill="#1a5a2a"/>
+    <path d="M163 340 Q140 300 120 310 Q145 315 163 335" fill="#26a86a"/>
+    <path d="M163 360 Q190 320 210 330 Q185 338 163 358" fill="#2ec97d"/>
+    <path d="M163 350 Q145 310 125 305 Q148 322 163 345" fill="#1f9058"/>
+    <circle cx="163" cy="295" r="14" fill="#4fd6a0"/>
+    <circle cx="163" cy="290" r="9"  fill="#6effc0"/>
+    <circle cx="163" cy="290" r="4"  fill="white" opacity="0.6"/>
+    <circle cx="163" cy="286" r="10" fill="#4fd6a0" opacity="0.3"/>
+  </g>
+
+  <!-- PLANT: purple -->
+  <g id="plant-purple">
+    <rect x="283" y="320" width="7" height="100" rx="3" fill="#2a1a5a"/>
+    <path d="M286 320 Q260 270 240 280 Q268 288 286 318" fill="#7c4ddb"/>
+    <path d="M286 345 Q315 295 335 308 Q307 320 286 343" fill="#9b6eff"/>
+    <path d="M286 332 Q265 285 248 278 Q272 298 286 330" fill="#6a3bbf"/>
+    <ellipse cx="286" cy="268" rx="9"  ry="13" fill="#b48aff"/>
+    <ellipse cx="278" cy="260" rx="7"  ry="10" fill="#c9a6ff"/>
+    <ellipse cx="294" cy="262" rx="7"  ry="11" fill="#b48aff"/>
+    <ellipse cx="286" cy="255" rx="8"  ry="10" fill="#d4baff"/>
+    <ellipse cx="286" cy="258" rx="4"  ry="5"  fill="white" opacity="0.5"/>
+  </g>
+
+  <!-- PLANT: coral (no sway, center anchor) -->
+  <rect x="398" y="330" width="6" height="90" rx="3" fill="#5a2a1a"/>
+  <path d="M401 330 Q375 285 358 295 Q383 305 401 328" fill="#e86a3a"/>
+  <path d="M401 355 Q428 308 448 320 Q420 333 401 353" fill="#ff8c5a"/>
+  <path d="M401 342 Q380 298 362 290 Q386 312 401 340" fill="#d05528"/>
+  <circle cx="401" cy="278" r="12" fill="#ff7c52"/>
+  <circle cx="391" cy="270" r="9"  fill="#ffaa88"/>
+  <circle cx="411" cy="272" r="8"  fill="#ff9070"/>
+  <circle cx="401" cy="264" r="10" fill="#ffcc44"/>
+  <circle cx="401" cy="268" r="4"  fill="white" opacity="0.6"/>
+
+  <!-- PLANT: blue -->
+  <g id="plant-blue">
+    <rect x="513" y="345" width="6" height="75" rx="3" fill="#1a2a5a"/>
+    <path d="M516 345 Q495 305 478 312 Q500 320 516 343" fill="#3a7fff"/>
+    <path d="M516 365 Q540 322 558 333 Q534 342 516 363" fill="#5c9fff"/>
+    <path d="M516 355 Q498 315 482 308 Q503 325 516 353" fill="#2a66dd"/>
+    <path d="M516 310 Q516 295 520 285 Q524 275 516 268 Q508 275 512 285 Q516 295 516 310" fill="#5c9fff"/>
+    <path d="M516 295 Q508 285 502 290 Q510 295 516 295" fill="#3a7fff"/>
+    <path d="M516 300 Q524 288 530 293 Q522 298 516 300" fill="#5c9fff"/>
+    <circle cx="516" cy="266" r="6" fill="#88ccff"/>
+    <circle cx="516" cy="264" r="3" fill="white" opacity="0.7"/>
+  </g>
+
+  <!-- PLANT: amber (no sway) -->
+  <rect x="335" y="370" width="5" height="50" rx="2" fill="#3a2a0a"/>
+  <path d="M337 370 Q322 350 312 355 Q328 360 337 368" fill="#d4a020"/>
+  <path d="M337 380 Q352 358 362 363 Q348 370 337 378" fill="#f0c040"/>
+  <path d="M337 375 Q320 354 310 350 Q326 360 337 373" fill="#b88818"/>
+  <circle cx="337" cy="346" r="9"  fill="#f5d060"/>
+  <circle cx="330" cy="340" r="6"  fill="#fff0a0"/>
+  <circle cx="344" cy="342" r="6"  fill="#f5d060"/>
+  <circle cx="337" cy="335" r="7"  fill="#ffe060"/>
+  <circle cx="337" cy="338" r="3"  fill="white" opacity="0.6"/>
+
+  <!-- ground foliage -->
+  <path d="M30 400 Q50 390 70 395 Q55 405 30 400"   fill="#1e4a1e"/>
+  <path d="M35 408 Q48 398 62 402 Q50 412 35 408"   fill="#174017"/>
+  <path d="M600 395 Q620 385 645 392 Q628 402 600 395" fill="#1e4a1e"/>
+  <path d="M605 403 Q622 394 638 399 Q625 408 605 403" fill="#174017"/>
+  <path d="M55 380 Q65 365 75 368 Q68 378 55 380"   fill="#2a6a2a"/>
+  <path d="M615 375 Q625 360 635 364 Q628 374 615 375" fill="#2a6a2a"/>
+  <path d="M230 400 Q240 393 250 396 Q243 404 230 400" fill="#1e4a1e"/>
+  <path d="M450 405 Q460 396 472 400 Q463 409 450 405" fill="#1e4a1e"/>
+
+  <!-- FIREFLIES -->
+  <g id="ff1-drift">
+    <circle id="ff1-glow" cx="200" cy="280" r="9"  fill="#ffff66" opacity="0.25"/>
+    <circle id="ff1-core" cx="200" cy="280" r="3"  fill="#ffffaa" opacity="0.9"/>
+  </g>
+  <g id="ff2-drift">
+    <circle id="ff2-glow" cx="440" cy="260" r="8"  fill="#66ff88" opacity="0.2"/>
+    <circle id="ff2-core" cx="440" cy="260" r="2.5" fill="#aaffaa" opacity="0.85"/>
+  </g>
+  <g id="ff3-drift">
+    <circle id="ff3-glow" cx="310" cy="250" r="7"  fill="#ffff99" opacity="0.18"/>
+    <circle id="ff3-core" cx="310" cy="250" r="2"  fill="#ffffcc" opacity="0.8"/>
+  </g>
+  <g id="ff4-drift">
+    <circle id="ff4-glow" cx="540" cy="290" r="9"  fill="#88ffff" opacity="0.2"/>
+    <circle id="ff4-core" cx="540" cy="290" r="3"  fill="#ccffff" opacity="0.85"/>
+  </g>
+  <g id="ff5-drift">
+    <circle id="ff5-glow" cx="130" cy="310" r="7"  fill="#ff99ff" opacity="0.18"/>
+    <circle id="ff5-core" cx="130" cy="310" r="2"  fill="#ffccff" opacity="0.8"/>
+  </g>
+
+  <!-- title -->
+  <text x="340" y="455" text-anchor="middle"
+        font-family="'Nunito','Varela Round','Arial Rounded MT Bold',sans-serif"
+        font-size="34" font-weight="900" letter-spacing="2"
+        fill="#6effc0" opacity="0.92">Vibe Garden</text>
+  <text x="340" y="483" text-anchor="middle"
+        font-family="'Nunito','Varela Round','Arial Rounded MT Bold',sans-serif"
+        font-size="15" font-weight="700" letter-spacing="1"
+        fill="#6effc0" opacity="0.55">plant your app here</text>
+
+</svg>
