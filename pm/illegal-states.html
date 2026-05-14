@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Making Illegal States Unrepresentable</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1714;
+    --ink-mid: #4a4540;
+    --ink-light: #8a8278;
+    --paper: #f5f1ea;
+    --paper-dark: #ede8df;
+    --rule: #c8c0b0;
+    --accent: #b84c2a;
+    --accent-dim: #d9896e;
+    --code-bg: #1e1b18;
+    --code-fg: #e8e0d0;
+    --good: #2a6e3f;
+    --bad: #8b2c1a;
+  }
+
+  html { font-size: 18px; background: var(--paper); color: var(--ink); }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 300;
+    line-height: 1.75;
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 4rem 2rem 8rem;
+    background: var(--paper);
+  }
+
+  /* — Header — */
+  header {
+    border-top: 3px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding: 2.5rem 0 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+  }
+
+  .deck {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.6;
+    max-width: 560px;
+    border-left: 2px solid var(--accent);
+    padding-left: 1.25rem;
+  }
+
+  /* — Body — */
+  p {
+    margin-bottom: 1.4rem;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink);
+    margin: 3rem 0 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* — Pull quote — */
+  .pull {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--ink);
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding: 1.5rem 0;
+    margin: 2.5rem 0;
+  }
+
+  .pull::before {
+    content: '\201C';
+    font-size: 3rem;
+    line-height: 0;
+    vertical-align: -0.5rem;
+    color: var(--accent);
+    margin-right: 0.1em;
+  }
+
+  /* — Code blocks — */
+  .code-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin: 2rem 0;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--rule);
+  }
+
+  @media (max-width: 600px) {
+    .code-pair { grid-template-columns: 1fr; }
+  }
+
+  .code-block {
+    background: var(--code-bg);
+    padding: 1.25rem;
+  }
+
+  .code-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .code-label.bad  { background: #3a1a10; color: #e07060; }
+  .code-label.good { background: #0e2a18; color: #60c080; }
+
+  .code-label::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+  .code-label.bad::before  { background: #e07060; }
+  .code-label.good::before { background: #60c080; }
+
+  pre {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: var(--code-fg);
+    overflow-x: auto;
+    padding: 1rem 1.25rem;
+    background: var(--code-bg);
+  }
+
+  .single-code {
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+
+  .single-code pre { padding: 1.25rem; }
+
+  .tok-kw    { color: #c792ea; }
+  .tok-type  { color: #82aaff; }
+  .tok-str   { color: #c3e88d; }
+  .tok-cm    { color: #546e7a; font-style: italic; }
+  .tok-fn    { color: #82aaff; }
+  .tok-val   { color: #f78c6c; }
+  .tok-op    { color: #89ddff; }
+  .tok-prop  { color: #ffcb6b; }
+
+  /* — Callout box — */
+  .callout {
+    background: var(--paper-dark);
+    border-left: 3px solid var(--accent);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .callout-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .callout p { margin-bottom: 0.5rem; font-size: 0.95rem; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* — Rule / divider — */
+  .section-rule {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 3rem 0;
+  }
+
+  /* — Marginal annotation style for inline code — */
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82em;
+    background: var(--paper-dark);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 0.1em 0.35em;
+    color: var(--accent);
+  }
+
+  /* — Animation on load — */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  header, section {
+    animation: fadeUp 0.5s ease both;
+  }
+
+  section:nth-of-type(1) { animation-delay: 0.05s; }
+  section:nth-of-type(2) { animation-delay: 0.1s; }
+  section:nth-of-type(3) { animation-delay: 0.15s; }
+  section:nth-of-type(4) { animation-delay: 0.2s; }
+  section:nth-of-type(5) { animation-delay: 0.25s; }
+
+  footer {
+    margin-top: 5rem;
+    padding-top: 1.5rem;
+    border-top: 3px solid var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="kicker">Type-driven design &nbsp;·&nbsp; Core principles</p>
+  <h1>Making illegal states unrepresentable</h1>
+  <p class="deck">A design principle that moves the burden of correctness from runtime checks and programmer discipline to the structure of types themselves.</p>
+</header>
+
+<section>
+  <p>Every program carries two models of its domain: the one written in code, and the one that is actually true. In most codebases, these two models diverge. The code says a <code>User</code> has an <code>email: string</code> and an <code>isVerified: boolean</code> — but the domain says something subtler: an unverified user has an unconfirmed address, and a verified user has one that has been checked. The boolean is a compression of that reality, and compressions lose information. Lost information becomes bugs.</p>
+
+  <p>Making illegal states unrepresentable is the discipline of closing that gap — not through more careful code, but through more expressive types. If the type system cannot construct a value that violates your domain rules, those violations cease to be a runtime possibility. They become, instead, a compile-time impossibility.</p>
+
+  <div class="pull">The type system cannot construct a value that violates your domain rules. Violations become compile-time impossibilities.</div>
+</section>
+
+<section>
+  <h2>The problem with flags</h2>
+
+  <p>Consider how a naïve model of "email verification" typically looks in a dynamically or weakly typed system:</p>
+
+  <div class="code-pair">
+    <div>
+      <div class="code-label bad">Fragile model</div>
+      <pre><span class="tok-kw">type</span> <span class="tok-type">User</span> <span class="tok-op">=</span> {
+  <span class="tok-prop">email</span><span class="tok-op">:</span> <span class="tok-type">string</span>
+  <span class="tok-prop">isVerified</span><span class="tok-op">:</span> <span class="tok-type">boolean</span>
+}</pre>
+    </div>
+    <div>
+      <div class="code-label bad">All of these compile</div>
+      <pre><span class="tok-cm">// ✓ sensible</span>
+{ email<span class="tok-op">:</span> <span class="tok-str">"a@b.com"</span>, isVerified<span class="tok-op">:</span> <span class="tok-val">true</span> }
+
+<span class="tok-cm">// ✓ sensible</span>
+{ email<span class="tok-op">:</span> <span class="tok-str">"a@b.com"</span>, isVerified<span class="tok-op">:</span> <span class="tok-val">false</span> }
+
+<span class="tok-cm">// ✗ nonsense — compiles fine</span>
+{ email<span class="tok-op">:</span> <span class="tok-str">""</span>, isVerified<span class="tok-op">:</span> <span class="tok-val">true</span> }</pre>
+    </div>
+  </div>
+
+  <p>The type permits nonsense. You can have a verified user with no email, or an empty string that downstream code — trusting <code>isVerified</code> — will treat as legitimate. The compiler waves it through. Every function that receives a <code>User</code> must now silently wonder whether it can trust the flag. The question becomes a constant, invisible tax on every callsite.</p>
+
+  <p>Now redesign the type to reflect the actual domain:</p>
+
+  <div class="single-code">
+    <div class="code-label good">Expressive model</div>
+    <pre><span class="tok-kw">type</span> <span class="tok-type">User</span> <span class="tok-op">=</span>
+  <span class="tok-op">|</span> { <span class="tok-prop">status</span><span class="tok-op">:</span> <span class="tok-str">"unverified"</span><span class="tok-op">;</span> <span class="tok-prop">email</span><span class="tok-op">:</span> <span class="tok-type">string</span> }
+  <span class="tok-op">|</span> { <span class="tok-prop">status</span><span class="tok-op">:</span> <span class="tok-str">"verified"</span><span class="tok-op">;</span>   <span class="tok-prop">verifiedEmail</span><span class="tok-op">:</span> <span class="tok-type">string</span> }
+
+<span class="tok-cm">// A function that only accepts verified users</span>
+<span class="tok-kw">function</span> <span class="tok-fn">sendConfirmation</span>(user<span class="tok-op">:</span> Extract<span class="tok-op">&lt;</span><span class="tok-type">User</span>, { status<span class="tok-op">:</span> <span class="tok-str">"verified"</span> }<span class="tok-op">&gt;</span>) {
+  <span class="tok-cm">// verifiedEmail is guaranteed present — no check needed</span>
+  send(user.verifiedEmail)
+}</pre>
+  </div>
+
+  <p>The impossible state — a verified user with no email — can no longer be constructed. The compiler enforces it. There is no boolean to misread, no empty string to guard against, no runtime check to forget. The type carries the proof that the contract has been satisfied.</p>
+</section>
+
+<section>
+  <h2>Parse, don't validate</h2>
+
+  <p>Closely related — and often described as the runtime counterpart of this principle — is the distinction between <em>parsing</em> and <em>validating</em>. Validation is a function that returns a boolean: it answers "is this data acceptable?" Parsing is a function that returns a new type: it answers "here is the acceptable version of this data, or an error explaining why it doesn't exist."</p>
+
+  <div class="code-pair">
+    <div>
+      <div class="code-label bad">Validation: proves nothing</div>
+      <pre><span class="tok-kw">function</span> <span class="tok-fn">isValidEmail</span>(s<span class="tok-op">:</span> <span class="tok-type">string</span>)<span class="tok-op">:</span> <span class="tok-type">boolean</span>
+
+<span class="tok-cm">// Caller must remember to check,</span>
+<span class="tok-cm">// and the type is still `string`</span>
+<span class="tok-cm">// after the check passes.</span></pre>
+    </div>
+    <div>
+      <div class="code-label good">Parsing: proof in the type</div>
+      <pre><span class="tok-kw">function</span> <span class="tok-fn">parseEmail</span>(s<span class="tok-op">:</span> <span class="tok-type">string</span>)
+  <span class="tok-op">:</span> <span class="tok-type">Email</span> <span class="tok-op">|</span> <span class="tok-type">Error</span>
+
+<span class="tok-cm">// If you have an `Email`, it was</span>
+<span class="tok-cm">// validated at construction.</span>
+<span class="tok-cm">// No re-checking needed downstream.</span></pre>
+    </div>
+  </div>
+
+  <p>The key insight is <em>where</em> this happens. Parsing occurs once, at the boundary where untrusted data enters the system — an HTTP request, a file read, a form submission. Everything inside the system speaks in already-parsed types. The proof that the data is valid is encoded in the type itself, not in a flag, not in a comment, not in programmer memory. It travels with the value wherever it goes.</p>
+
+  <div class="callout">
+    <p class="callout-title">The boundary principle</p>
+    <p>Draw a line around your system's trust boundary. Untrusted data — strings, JSON, user input — crosses that boundary exactly once. At the crossing, you parse it into domain types. Inside the boundary, no function ever re-validates data that a type already guarantees. This is where the principle actually delivers its value: not at the moment of parsing, but in the thousands of callsites that never have to think about it again.</p>
+  </div>
+</section>
+
+<section>
+  <h2>How far it goes</h2>
+
+  <p>The principle scales with your type system's expressiveness. In TypeScript you can get remarkably far with discriminated unions and branded types. In Haskell or Rust, phantom types let you encode state machine transitions — a <code>Connection&lt;Open&gt;</code> type that literally cannot be passed to a function expecting <code>Connection&lt;Closed&gt;</code>. In languages with dependent types (Idris, Lean), you can encode that a list has a specific length, that an index is always within bounds, that a matrix multiplication has compatible dimensions — all at compile time, with no runtime overhead.</p>
+
+  <p>A classic example is modeling a non-empty list. The standard <code>List&lt;T&gt;</code> forces every caller of <code>head()</code> to handle the empty case — or risk a runtime crash. A <code>NonEmptyList&lt;T&gt;</code> type, constructed only when you have at least one element, makes <code>head()</code> total: it always returns a value, because the type guarantees there is one.</p>
+
+  <div class="single-code">
+    <div class="code-label good">Haskell — phantom types for connection state</div>
+    <pre><span class="tok-kw">data</span> <span class="tok-type">Open</span>
+<span class="tok-kw">data</span> <span class="tok-type">Closed</span>
+
+<span class="tok-kw">newtype</span> <span class="tok-type">Connection</span> state <span class="tok-op">=</span> <span class="tok-type">Connection</span> Handle
+
+<span class="tok-fn">open</span>  <span class="tok-op">::</span> <span class="tok-type">String</span> <span class="tok-op">-&gt;</span> <span class="tok-type">IO</span> (<span class="tok-type">Connection Open</span>)
+<span class="tok-fn">close</span> <span class="tok-op">::</span> <span class="tok-type">Connection Open</span> <span class="tok-op">-&gt;</span> <span class="tok-type">IO</span> (<span class="tok-type">Connection Closed</span>)
+<span class="tok-fn">query</span> <span class="tok-op">::</span> <span class="tok-type">Connection Open</span> <span class="tok-op">-&gt;</span> <span class="tok-type">Query</span> <span class="tok-op">-&gt;</span> <span class="tok-type">IO Result</span>
+
+<span class="tok-cm">-- query on a closed connection: compile error, not runtime crash</span></pre>
+  </div>
+
+  <p>The pragmatic limit is also real. Encoding every invariant as a type is not free — it requires a richer type vocabulary, steeper onboarding for new contributors, and sometimes machinery (type class instances, GADTs, proof terms) that can obscure simple logic. The art is in calibrating how much of the domain to encode. Illegal states that are catastrophic, security-relevant, or frequently violated by accident are worth encoding. States that are merely improbable or easily caught by tests may not justify the complexity.</p>
+</section>
+
+<section>
+  <h2>What changes in practice</h2>
+
+  <p>The most immediate effect is that function signatures become documentation that cannot go stale. A function that takes a <code>VerifiedUser</code> communicates its precondition exactly, without a comment, without a runtime assertion, without a unit test that checks the check. The type does the work. Readers don't need to trace through the implementation to understand what is assumed — the contract is visible at the callsite.</p>
+
+  <p>The compounding effect comes over time. As a codebase grows, the surface area of invalid states grows with it. In a weakly-typed system, that surface area is managed by tests, conventions, code review, and memory. All of these scale poorly. Types scale perfectly: adding a new field that must be present in the verified state means adding it to the type, and the compiler tells you every callsite that needs to be updated. The refactoring is guided rather than hunted.</p>
+
+  <div class="pull">Function signatures become documentation that cannot go stale. The type does the work.</div>
+
+  <p>Perhaps most importantly, it changes the texture of reading code. Functions that operate deep inside a system — far from any input validation — no longer need to be read defensively. When a type guarantees a precondition, the function body can assume it without apology. The mental overhead of wondering "but what if this is empty, or null, or unverified" disappears because the type has already answered the question. You read the code at face value, and face value is correct.</p>
+</section>
+
+<hr class="section-rule">
+
+<footer>
+  Type-driven design &nbsp;·&nbsp; Making illegal states unrepresentable &nbsp;·&nbsp; Originally articulated in the Haskell community; popularized for broader audiences by Yaron Minsky (Jane Street) and Scott Wlaschin
+</footer>
+
+</body>
+</html>
